@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1741124702714",
+    "name": "Paracetamol 500mg",
+    "company": "Cipla Ltd.",
+    "description": "Used to treat fever and mild to moderate pain.",
+    "category": "Pain Reliever",
+    "price": 50,
+    "quantity": 100,
+    "restockThreshold": 10,
+    "prescriptionRequired": true,
+    "expiryDate": "2026-12-31"
+  }
+]

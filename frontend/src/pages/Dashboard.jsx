@@ -226,7 +226,7 @@ const Dashboard = () => {
   return (
     <div className="p-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-290 ">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-281 ">
         {stats.map((stat) => (
           <motion.div
             key={stat.key}

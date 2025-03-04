@@ -1,58 +1,157 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
-const medicinesFile = path.join(__dirname, "../data/medicines.json");
 
-const readMedicines = () => {
-  if (!fs.existsSync(medicinesFile)) return [];
-  return JSON.parse(fs.readFileSync(medicinesFile, "utf-8"));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const dataFilePath = path.join(__dirname, "../data/medicines.json");
+
+const readData = () => {
+  if (!fs.existsSync(dataFilePath)) {
+    fs.writeFileSync(dataFilePath, JSON.stringify([]));
+  }
+  const data = fs.readFileSync(dataFilePath);
+  return JSON.parse(data);
 };
 
-const writeMedicines = (data) => {
-  fs.writeFileSync(medicinesFile, JSON.stringify(data, null, 2));
+const writeData = (data) => {
+  fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
 };
+
 
 const getMedicines = (req, res) => {
-  res.json(readMedicines());
+  try {
+    const medicines = readData();
+    res.status(200).json(medicines);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching medicines", error });
+  }
 };
 
 const addMedicine = (req, res) => {
-  const { name, stock, price, description } = req.body;
-  if (!name || !stock || !price) {
-    return res.status(400).json({ message: "All fields are required!" });
+  try {
+    const {
+      name,
+      company,
+      description,
+      category,
+      price,
+      quantity,
+      restockThreshold,
+      prescriptionRequired,
+      expiryDate,
+    } = req.body;
+
+    if (
+      !name || !company || !description || !category || price === undefined || quantity === undefined || restockThreshold === undefined || prescriptionRequired === undefined || expiryDate
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const medicines = readData();
+    const newMedicine = {
+      id: Date.now().toString(),
+      name,
+      company,
+      description,
+      category,
+      price,
+      quantity,
+      restockThreshold,
+      prescriptionRequired,
+      expiryDate,
+    };
+
+    medicines.push(newMedicine);
+    writeData(medicines);
+
+    res.status(201).json({ message: "Medicine added successfully", medicine: newMedicine });
+  } catch (error) {
+    res.status(500).json({ message: "Error adding medicine", error });
   }
-
-  const medicines = readMedicines();
-  const newMedicine = { id: Date.now(), name, stock, price, description };
-  medicines.push(newMedicine);
-  writeMedicines(medicines);
-
-  res.status(201).json({ message: "Medicine added successfully!", newMedicine });
 };
 
 const updateMedicine = (req, res) => {
-  const { id } = req.params;
-  const medicines = readMedicines();
-  const index = medicines.findIndex((med) => med.id == id);
+  try {
+    const { id } = req.params;
+    const medicines = readData();
+    const index = medicines.findIndex((med) => med.id === id);
 
-  if (index === -1) return res.status(404).json({ message: "Medicine not found" });
+    if (index === -1) {
+      return res.status(404).json({ message: "Medicine not found" });
+    }
 
-  medicines[index] = { ...medicines[index], ...req.body };
-  writeMedicines(medicines);
+    medicines[index] = { ...medicines[index], ...req.body };
+    writeData(medicines);
 
-  res.json({ message: "Medicine updated successfully", medicine: medicines[index] });
+    res.status(200).json({ message: "Medicine updated successfully", medicine: medicines[index] });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating medicine", error });
+  }
 };
 
 const deleteMedicine = (req, res) => {
-  const { id } = req.params;
-  const medicines = readMedicines().filter((med) => med.id != id);
-  writeMedicines(medicines);
-  res.json({ message: "Medicine deleted successfully" });
+  try {
+    const { id } = req.params;
+    let medicines = readData();
+    const newMedicines = medicines.filter((med) => med.id !== id);
+
+    if (medicines.length === newMedicines.length) {
+      return res.status(404).json({ message: "Medicine not found" });
+    }
+
+    writeData(newMedicines);
+    res.status(200).json({ message: "Medicine deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting medicine", error });
+  }
 };
 
-module.exports = { 
-    getMedicines, 
-    addMedicine, 
-    updateMedicine, 
-    deleteMedicine 
+const restockMedicine = (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quantity } = req.body;
+
+    if (!quantity || quantity <= 0) {
+      return res.status(400).json({ message: "Invalid restock quantity" });
+    }
+
+    const medicines = readData();
+    const index = medicines.findIndex((med) => med.id === id);
+
+    if (index === -1) {
+      return res.status(404).json({ message: "Medicine not found" });
+    }
+
+    medicines[index].quantity += quantity;
+    writeData(medicines);
+
+    res.status(200).json({ message: "Medicine restocked successfully", medicine: medicines[index] });
+  } catch (error) {
+    res.status(500).json({ message: "Error restocking medicine", error });
+  }
+};
+
+
+const getLowStockMedicines = (req, res) => {
+  try {
+    const medicines = readData();
+    const lowStockMedicines = medicines.filter((med) => med.quantity < 10);
+    res.status(200).json(lowStockMedicines);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching low-stock medicines", error });
+  }
+};
+
+
+export {
+  getMedicines,
+  addMedicine,
+  updateMedicine,
+  deleteMedicine,
+  restockMedicine,
+  getLowStockMedicines,
 };
