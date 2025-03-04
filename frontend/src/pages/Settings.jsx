@@ -7,7 +7,7 @@ const Settings = () => {
   const [notifications, setNotifications] = useState(true);
 
   return (
-    <div className="w-384 flex-1 p-6 bg-gray-900 text-white min-h-screen">
+    <div className="w-295 flex-1 p-6 bg-gray-900 text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-4">Settings</h1>
       <p className="mb-6">Manage your preferences and account settings.</p>
 

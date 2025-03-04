@@ -146,7 +146,7 @@ function DoctorsSection() {
   };
 
   return (
-    <div className="flex-1 w-384 h-full p-14 bg-gray-100 dark:bg-gray-800">
+    <div className="flex-1 w-294 h-full p-14 bg-gray-100 dark:bg-gray-800">
       {/* Animated Heading */}
       <motion.h2
         className="text-3xl font-bold mb-6 text-gray-900 dark:text-white"

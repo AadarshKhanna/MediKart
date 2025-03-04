@@ -76,7 +76,7 @@ function Profile() {
   }, [isDarkMode]);
 
   return (
-    <div className={` mx-auto w-384 p-6 flex flex-col gap-6 ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-800'}`}>
+    <div className={` mx-auto w-293 p-6 flex flex-col gap-6 ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-800'}`}>
       <div className={`p-6 rounded-2xl shadow-md flex items-center justify-between relative ${isDarkMode ? 'bg-gray-800' : 'bg-blue-600 text-white'}`}>
         <div className="flex items-center gap-4">
           <label htmlFor="upload-profile" className="cursor-pointer">
@@ -150,8 +150,8 @@ function Profile() {
             <h3 className="text-xl font-semibold flex items-center gap-2"><User size={20} />Profile Information</h3>
             <p>View and edit your personal details.</p>
             <div className="mt-4 space-y-2">
-              <div className="flex items-center gap-2"><Mail size={16} /> admin@example.com</div>
-              <div className="flex items-center gap-2"><Phone size={16} /> +1 123-456-7890</div>
+              <div className="flex items-center gap-2"><Mail size={16} /> Moksh@example.com</div>
+              <div className="flex items-center gap-2"><Phone size={16} /> +91 123-456-7890</div>
             </div>
           </div>
         </Card>
