@@ -226,11 +226,11 @@ const Dashboard = () => {
   return (
     <div className="p-6">
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 w-354 ">
         {stats.map((stat) => (
           <motion.div
             key={stat.key}
-            className="p-4 flex items-center space-x-4 bg-white shadow-md rounded-lg cursor-pointer hover:shadow-lg transition"
+            className="p-4 flex items-center space-x-4 bg-gray-200 shadow-md rounded-lg cursor-pointer hover:shadow-lg transition"
             onClick={() => setSelectedMetric(stat.key)}
             whileHover={{ scale: 1.05 }}
           >
@@ -239,7 +239,7 @@ const Dashboard = () => {
             </div>
             <div>
               <p className="text-lg font-semibold">{stat.value}</p>
-              <p className="text-gray-500">{stat.title}</p>
+              <p className="text-gray-700">{stat.title}</p>
             </div>
           </motion.div>
         ))}
@@ -281,7 +281,7 @@ const Dashboard = () => {
       {/* Graphs */}
       <motion.div
         key={`${selectedYear}-${selectedMetric}-${graphType}`}
-        className="mt-6 bg-white p-6 rounded-lg shadow-md"
+        className="mt-6 bg-gray-100 p-6 rounded-lg shadow-md"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
