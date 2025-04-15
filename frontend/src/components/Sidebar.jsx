@@ -14,7 +14,7 @@ function Sidebar() {
   ];
 
   return (
-    <nav className="w-64 h-screen bg-gray-900 text-white p-5 flex flex-col shadow-lg">
+    <nav className="w-64 h-screen bg-blue-600 text-white p-5 flex flex-col shadow-lg">
     <h2 className="text-3xl font-bold mb-6 tracking-wide text-gray-300">Admin Panel</h2>
 
 
