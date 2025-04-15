@@ -7,5 +7,14 @@
     "contact": "+911234567890",
     "email": "mo@gmail.com",
     "status": "Active"
+  },
+  {
+    "id": 1744747395369,
+    "name": "Dr Dilip",
+    "specialization": "Skin",
+    "experience": "2",
+    "contact": "1234567890",
+    "email": "dilip@gmail.com",
+    "status": "Active"
   }
 ]
