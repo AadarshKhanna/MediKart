@@ -14,7 +14,7 @@ const BuyMedicine = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/medicines")
+      .get("http://localhost:5001/api/medicines")
       .then((response) => setMedicines(response.data))
       .catch((error) => console.error("Error fetching medicines:", error));
   }, []);
@@ -65,7 +65,7 @@ const BuyMedicine = () => {
     formData.append("prescription", prescription);
 
     axios
-      .post("http://localhost:5000/api/orders", formData)
+      .post("http://localhost:5001/api/orders", formData)
       .then(() => {
         setMessage("Order placed! Our doctors will review your prescription.");
       })
@@ -83,7 +83,7 @@ const BuyMedicine = () => {
         {medicines.map((medicine) => (
           <div key={medicine.id} style={styles.card}>
             <img
-              src={`http://localhost:5000${medicine.image}`}
+              src={`http://localhost:5001${medicine.image}`}
               alt={medicine.name}
               style={styles.image}
             />

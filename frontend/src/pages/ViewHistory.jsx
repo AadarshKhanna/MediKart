@@ -7,7 +7,7 @@ const ViewHistory = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/order-history")
+      .get("http://localhost:5001/api/order-history")
       .then((response) => setOrders(response.data))
       .catch((error) => console.error("Error fetching order history:", error));
   }, []);
@@ -28,11 +28,11 @@ const ViewHistory = () => {
             <p><strong>Address:</strong> {order.address}</p>
             <p><strong>Pincode:</strong> {order.pincode}</p>
             <p><strong>Order Date:</strong> {new Date(order.timestamp).toLocaleString()}</p>
-            <p><strong>Prescription:</strong> 
-              <a href={`http://localhost:5000/uploads/${order.prescription}`} target="_blank" rel="noopener noreferrer">
+            {/* <p><strong>Prescription:</strong> 
+              <a href={`http://localhost:5001/uploads/${order.prescription}`} target="_blank" rel="noopener noreferrer">
                 View Prescription
               </a>
-            </p>
+            </p> */}
           </div>
         ))
       )}

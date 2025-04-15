@@ -1,56 +1,3 @@
-// import { Link, useLocation } from "react-router-dom";
-// import { LayoutDashboard, Package, PlusCircle, User, Stethoscope, Settings } from "lucide-react";
-
-// function Sidebar() {
-//   const location = useLocation();
-
-//   const menuItems = [
-//     { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
-//     { name: "Restock", path: "/restock", icon: <Package size={20} /> },
-//     { name: "Add Medicine", path: "/add-medicine", icon: <PlusCircle size={20} /> },
-//     { name: "Doctors Management", path: "/doctors", icon: <Stethoscope size={20} /> },
-//     { name: "Profile", path: "/profile", icon: <User size={20} /> },
-//   ];
-
-//   return (
-//     <nav className="w-64 h-screen bg-gray-900 text-white p-5 flex flex-col shadow-lg">
-//       <h2 className="text-3xl font-bold mb-6 tracking-wide">Admin Panel</h2>
-      
-//       <ul className="space-y-3 flex-1">
-//         {menuItems.map((item) => (
-//           <li key={item.path}>
-//             <Link
-//               to={item.path}
-//               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all 
-//                 ${location.pathname === item.path 
-//                   ? "bg-gray-700 text-white font-semibold" 
-//                   : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
-//             >
-//               {item.icon}
-//               {item.name}
-//             </Link>
-//           </li>
-//         ))}
-//       </ul>
-
-//       {/* Settings Button at the Bottom */}
-//       <div className="mt-auto">
-//         <Link
-//           to="/settings"
-//           className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all
-//             ${location.pathname === "/settings" 
-//               ? "bg-gray-700 text-white font-semibold" 
-//               : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
-//         >
-//           <Settings size={20} />
-//           Settings
-//         </Link>
-//       </div>
-//     </nav>
-//   );
-// }
-
-// export default Sidebar;
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Package, PlusCircle, User, Stethoscope, Settings, ArrowLeft } from "lucide-react";
 
@@ -68,8 +15,9 @@ function Sidebar() {
 
   return (
     <nav className="w-64 h-screen bg-gray-900 text-white p-5 flex flex-col shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 tracking-wide">Admin Panel</h2>
-      
+    <h2 className="text-3xl font-bold mb-6 tracking-wide text-gray-300">Admin Panel</h2>
+
+
       <ul className="space-y-3 flex-1">
         {menuItems.map((item) => (
           <li key={item.path}>
@@ -77,7 +25,7 @@ function Sidebar() {
               to={item.path}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all 
                 ${location.pathname === item.path 
-                  ? "bg-gray-700 text-white font-semibold" 
+                  ? "bg-gray-400 text-white font-semibold" 
                   : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
             >
               {item.icon}
