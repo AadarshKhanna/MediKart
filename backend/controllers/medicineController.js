@@ -25,6 +25,7 @@ const getMedicines = (req, res) => {
   }
 };
 
+
 // const addMedicine = (req, res) => {
 //   try {
 //     const {
@@ -38,6 +39,8 @@ const getMedicines = (req, res) => {
 //       prescriptionRequired,
 //       expiryDate,
 //     } = req.body;
+
+//     const imageFile = req.file; // Access uploaded image file
 
 //     if (
 //       !name || !company || !description || !category || 
@@ -60,6 +63,7 @@ const getMedicines = (req, res) => {
 //       restockThreshold,
 //       prescriptionRequired,
 //       expiryDate,
+//       image: imageFile ? imageFile.filename : null, // Store the filename of the uploaded image
 //     };
 
 //     medicines.push(newMedicine);
@@ -70,6 +74,7 @@ const getMedicines = (req, res) => {
 //     res.status(500).json({ message: "Error adding medicine", error });
 //   }
 // };
+
 const addMedicine = (req, res) => {
   try {
     const {
@@ -86,6 +91,7 @@ const addMedicine = (req, res) => {
 
     const imageFile = req.file; // Access uploaded image file
 
+    // Validate required fields
     if (
       !name || !company || !description || !category || 
       price === undefined || quantity === undefined || 
@@ -95,6 +101,16 @@ const addMedicine = (req, res) => {
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    // Parse price, quantity, and restockThreshold as integers
+    const parsedPrice = parseInt(price, 10);
+    const parsedQuantity = parseInt(quantity, 10);
+    const parsedRestockThreshold = parseInt(restockThreshold, 10);
+
+    // Ensure the values are valid integers
+    if (isNaN(parsedPrice) || isNaN(parsedQuantity) || isNaN(parsedRestockThreshold)) {
+      return res.status(400).json({ message: "Price, quantity, and restock threshold must be valid integers" });
+    }
+
     const medicines = readData();
     const newMedicine = {
       id: Date.now().toString(),
@@ -102,9 +118,9 @@ const addMedicine = (req, res) => {
       company,
       description,
       category,
-      price,
-      quantity,
-      restockThreshold,
+      price: parsedPrice,
+      quantity: parsedQuantity,
+      restockThreshold: parsedRestockThreshold,
       prescriptionRequired,
       expiryDate,
       image: imageFile ? imageFile.filename : null, // Store the filename of the uploaded image
@@ -118,7 +134,6 @@ const addMedicine = (req, res) => {
     res.status(500).json({ message: "Error adding medicine", error });
   }
 };
-
 
 const updateMedicine = (req, res) => {
   try {

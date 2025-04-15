@@ -6,9 +6,9 @@
     "description": "Used to treat fever and mild to moderate pain.",
     "category": "Pain Reliever",
     "price": 50,
-    "quantity": 100,
+    "quantity": 144,
     "restockThreshold": 10,
-    "prescriptionRequired": true,
+    "prescriptionRequired": false,
     "expiryDate": "2026-12-31"
   },
   {
@@ -17,11 +17,24 @@
     "company": "Apollo",
     "description": "100mg",
     "category": "skin",
-    "price": "190",
-    "quantity": "300",
-    "restockThreshold": "38",
-    "prescriptionRequired": true,
+    "price": 50,
+    "quantity": 144,
+    "restockThreshold": 20,
+    "prescriptionRequired": false,
     "expiryDate": "2027-06-16",
+    "image": null
+  },
+  {
+    "id": "1744750980095",
+    "name": "Cetaphil",
+    "company": "Apollo",
+    "description": "werty",
+    "category": "Hair",
+    "price": 50,
+    "quantity": 225,
+    "restockThreshold": 11,
+    "prescriptionRequired": false,
+    "expiryDate": "2026-10-16",
     "image": null
   }
 ]
