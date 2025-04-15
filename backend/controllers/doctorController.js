@@ -17,17 +17,37 @@ const getDoctors = (req, res) => {
 };
 
 const addDoctor = (req, res) => {
-  const { name, specialization, licenseNumber, contact, approvalCount, status } = req.body;
-  if (!name || !specialization || !licenseNumber || !contact) {
+  const { name, specialization, experience, contact, email } = req.body;
+  if (!name || !specialization || !experience || !contact || !email) {
     return res.status(400).json({ message: "All fields are required!" });
   }
 
   const doctors = readDoctors();
-  const newDoctor = { id: Date.now(), name, specialization, licenseNumber, contact, approvalCount: approvalCount || 0, status: status || "Active" };
+  const newDoctor = {
+    id: Date.now(),
+    name,
+    specialization,
+    experience,
+    contact,
+    email,
+    status: "Active"
+  };
   doctors.push(newDoctor);
   writeDoctors(doctors);
 
   res.status(201).json({ message: "Doctor added successfully!", newDoctor });
+};
+
+const getDoctorById = (req, res) => {
+  const { id } = req.params;
+  const doctors = readDoctors();
+  const doctor = doctors.find((doc) => doc.id == id);
+
+  if (!doctor) {
+    return res.status(404).json({ message: "Doctor not found" });
+  }
+
+  res.json(doctor);
 };
 
 const updateDoctor = (req, res) => {
@@ -53,5 +73,6 @@ const deleteDoctor = (req, res) => {
 module.exports = { getDoctors, 
     addDoctor, 
     updateDoctor, 
-    deleteDoctor 
+    deleteDoctor,
+    getDoctorById
 };

@@ -1,35 +1,7 @@
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import Sidebar from "./components/Sidebar";
-// import Dashboard from "./pages/Dashboard";
-// import Restock from "./pages/Restock";
-// import AddMedicine from "./pages/AddMedicine";
-// import Profile from "./pages/Profile";
-// import DoctorsSection from "./pages/DoctorsSection";
-// import Settings from "./pages/Settings";
-// function App() {
-//   return (
-//     <Router>
-//       <div className="flex h-screen">
-//         <Sidebar />
-//         <main className="flex-1 p-5 overflow-auto"> 
-//           <Routes>
-//             <Route path="/" element={<Dashboard />} />
-//             <Route path="/restock" element={<Restock />} />
-//             <Route path="/add-medicine" element={<AddMedicine />} />
-//             <Route path="/profile" element={<Profile />} />
-//             <Route path="/doctors" element={<DoctorsSection />} />
-//             <Route path="/settings" element={<Settings />} />
-//           </Routes>
-//         </main>
-//       </div>
-//     </Router>
-//   );
-// }
-
-// export default App;
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./login/LandingPage.jsx";
-import Login from "./login/LoginPage.jsx";
+import Login from "./login/Login.jsx";
+import Signup from "./login/Signup.jsx";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import Sidebar from "./components/Sidebar";
@@ -38,34 +10,58 @@ import AddMedicine from "./pages/AddMedicine";
 import Profile from "./pages/Profile";
 import DoctorsSection from "./pages/DoctorsSection";
 import Settings from "./pages/Settings";
+import BuyMedicine from "./components/Medicine_Buy/BuyMedicine";
+import ViewHistory from "./pages/ViewHistory";
+import DoctorProfileDashboard from "./pages/docterprofiledashboard.jsx";
 
 function App() {
+  const isAuthenticated = localStorage.getItem("adminToken"); // Authentication check
+
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<Login />} />
+        {/* Redirect to landing page after login */}
+        <Route path="/" element={isAuthenticated ? <Navigate to="/landing" /> : <Navigate to="/login" />} />
 
+        {/* Login & Signup Pages */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/adminlogin" element={<Login />} />
+        
+
+        {/* Landing Page (after login) */}
+        <Route path="/landing" element={<LandingPage />} />
+
+        {/* User Pages */}
+        <Route path="/user" element={<BuyMedicine />} />
+        <Route path="/view-history" element={<ViewHistory />} />
+
+        {/* Protected Routes */}
         <Route
           path="/*"
           element={
-            <ProtectedRoute
-              element={
-                <div className="flex h-screen">
-                  <Sidebar />
-                  <main className="flex-1 p-5 overflow-auto">
-                    <Routes>
-                      <Route path="/dashboard" element={<Dashboard />} />
-                      <Route path="/restock" element={<Restock />} />
-                      <Route path="/add-medicine" element={<AddMedicine />} />
-                      <Route path="/profile" element={<Profile />} />
-                      <Route path="/doctors" element={<DoctorsSection />} />
-                      <Route path="/settings" element={<Settings />} />
-                    </Routes>
-                  </main>
-                </div>
-              }
-            />
+            isAuthenticated ? (
+              <ProtectedRoute
+                element={
+                  <div className="flex h-screen">
+                    <Sidebar />
+                    <main className="flex-1 p-5 overflow-auto">
+                      <Routes>
+                        <Route path="/dashboard" element={<Dashboard />} />
+                        <Route path="/restock" element={<Restock />} />
+                        <Route path="/add-medicine" element={<AddMedicine />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/doctors" element={<DoctorsSection />} />
+                        <Route path="/settings" element={<Settings />} />
+                        <Route path="/doctorprofile/:id" element={<DoctorProfileDashboard/>}/>
+                      </Routes>
+                    </main>
+                  </div>
+                }
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
       </Routes>
