@@ -416,8 +416,8 @@ function AddMedicine() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Add Medicine Form */}
-          <div className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <div className="lg:col-span-1 bg-white dark:bg-amber-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-blue-200 dark:text-white mb-6">
               Medicine Details
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -560,7 +560,7 @@ function AddMedicine() {
 
           {/* Medicines List */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="bg-white dark:bg-amber-800 rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Current Inventory
               </h2>

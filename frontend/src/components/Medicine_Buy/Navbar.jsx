@@ -29,7 +29,7 @@ const Navbar = () => {
         <a href="/" className="text-gray-700 hover:text-blue-600">
           Home
         </a>
-        <a href="/about" className="text-gray-700 hover:text-blue-600">
+        <a href="/dashboard" className="text-gray-700 hover:text-blue-600">
           About
         </a>
 
