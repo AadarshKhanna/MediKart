@@ -12,7 +12,6 @@ dotenv.config();
 const adminRoutes = require("./routes/adminRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const medicineRoutes = require("./routes/medicineRoutes");
-const orderRoutes = require("./routes/orderRoutes");
 const orderController = require("./controllers/orderController");
 
 const app = express();
@@ -27,8 +26,8 @@ app.use("/upload", express.static("routes/upload"));
 app.use("/images", express.static("routes/images"));
 app.use("/api/admin", adminRoutes);
 app.use("/api/doctors", doctorRoutes);
+
 app.use("/api/medicines", medicineRoutes);
-app.use("/api/orders", orderRoutes);
 app.get("/api/order-history", orderController.getOrderHistory);
 
 // Function to read users from file

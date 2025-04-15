@@ -25,6 +25,51 @@ const getMedicines = (req, res) => {
   }
 };
 
+// const addMedicine = (req, res) => {
+//   try {
+//     const {
+//       name,
+//       company,
+//       description,
+//       category,
+//       price,
+//       quantity,
+//       restockThreshold,
+//       prescriptionRequired,
+//       expiryDate,
+//     } = req.body;
+
+//     if (
+//       !name || !company || !description || !category || 
+//       price === undefined || quantity === undefined || 
+//       restockThreshold === undefined || prescriptionRequired === undefined || 
+//       !expiryDate
+//     ) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+
+//     const medicines = readData();
+//     const newMedicine = {
+//       id: Date.now().toString(),
+//       name,
+//       company,
+//       description,
+//       category,
+//       price,
+//       quantity,
+//       restockThreshold,
+//       prescriptionRequired,
+//       expiryDate,
+//     };
+
+//     medicines.push(newMedicine);
+//     writeData(medicines);
+
+//     res.status(201).json({ message: "Medicine added successfully", medicine: newMedicine });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error adding medicine", error });
+//   }
+// };
 const addMedicine = (req, res) => {
   try {
     const {
@@ -38,6 +83,8 @@ const addMedicine = (req, res) => {
       prescriptionRequired,
       expiryDate,
     } = req.body;
+
+    const imageFile = req.file; // Access uploaded image file
 
     if (
       !name || !company || !description || !category || 
@@ -60,6 +107,7 @@ const addMedicine = (req, res) => {
       restockThreshold,
       prescriptionRequired,
       expiryDate,
+      image: imageFile ? imageFile.filename : null, // Store the filename of the uploaded image
     };
 
     medicines.push(newMedicine);
@@ -70,6 +118,7 @@ const addMedicine = (req, res) => {
     res.status(500).json({ message: "Error adding medicine", error });
   }
 };
+
 
 const updateMedicine = (req, res) => {
   try {

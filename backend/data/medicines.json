@@ -10,5 +10,18 @@
     "restockThreshold": 10,
     "prescriptionRequired": true,
     "expiryDate": "2026-12-31"
+  },
+  {
+    "id": "1744747097942",
+    "name": "Minoxidil",
+    "company": "Apollo",
+    "description": "100mg",
+    "category": "skin",
+    "price": "190",
+    "quantity": "300",
+    "restockThreshold": "38",
+    "prescriptionRequired": true,
+    "expiryDate": "2027-06-16",
+    "image": null
   }
 ]

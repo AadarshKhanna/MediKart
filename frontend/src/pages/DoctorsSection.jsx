@@ -949,7 +949,7 @@ function DoctorsSection() {
           {/* Search & Filter Section */}
           <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
             <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
+              <Search className="absolute left-55 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
               <input
                 type="text"
                 placeholder="Search by name"
@@ -993,7 +993,7 @@ function DoctorsSection() {
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
+                  <User className="absolute left-255 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-100" size={20} />
                   <input
                     type="text"
                     name="name"
@@ -1007,7 +1007,7 @@ function DoctorsSection() {
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Specialization</label>
                 <div className="relative">
-                  <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
+                  <Briefcase className="absolute left-255 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-100" size={20} />
                   <input
                     type="text"
                     name="specialization"
@@ -1021,7 +1021,7 @@ function DoctorsSection() {
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Experience (years)</label>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
+                  <Calendar className="absolute left-255 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-100" size={20} />
                   <input
                     type="number"
                     name="experience"
@@ -1035,7 +1035,7 @@ function DoctorsSection() {
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Contact</label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
+                  <Phone className="absolute left-255 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-100" size={20} />
                   <input
                     type="tel"
                     name="contact"
@@ -1049,7 +1049,7 @@ function DoctorsSection() {
               <div className="md:col-span-2 space-y-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={20} />
+                  <Mail className="absolute left-255 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-100" size={20} />
                   <input
                     type="email"
                     name="email"
