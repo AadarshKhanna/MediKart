@@ -68,5 +68,10 @@
     "username": "moksh",
     "email": "mo@g.com",
     "password": "$2b$10$W9SyRyKcBpfrBEW7hVjvF.sY7vF/OczNIx4u063lziWtcKBxR0OIG"
+  },
+  {
+    "username": "Aadarsh",
+    "email": "a@123gmail.com",
+    "password": "$2b$10$V0L74IDfIxKWwfiTlZx5.uRdLraZsd8wyGfFWtjeQKfWWPZ2/ya5S"
   }
 ]

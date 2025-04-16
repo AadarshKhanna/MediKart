@@ -6,12 +6,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
+const predictRoute = require('./routes/predictRoute');
 // Load environment variables
 dotenv.config();
 
 const adminRoutes = require("./routes/adminRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const medicineRoutes = require("./routes/medicineRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const orderController = require("./controllers/orderController");
 
 const app = express();
@@ -22,12 +24,13 @@ const USERS_FILE = "users.json";
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
+app.use('/api', predictRoute);
 app.use("/upload", express.static("routes/upload"));
 app.use("/images", express.static("routes/images"));
 app.use("/api/admin", adminRoutes);
 app.use("/api/doctors", doctorRoutes);
-
 app.use("/api/medicines", medicineRoutes);
+app.use("/api/orders", orderRoutes);
 app.get("/api/order-history", orderController.getOrderHistory);
 
 // Function to read users from file
@@ -90,7 +93,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to the MediStore Admin Backend");
 });
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+

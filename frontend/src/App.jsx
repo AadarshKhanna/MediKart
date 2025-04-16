@@ -13,7 +13,7 @@ import Settings from "./pages/Settings";
 import BuyMedicine from "./components/Medicine_Buy/BuyMedicine";
 import ViewHistory from "./pages/ViewHistory";
 import DoctorProfileDashboard from "./pages/docterprofiledashboard.jsx";
-
+import UploadForm from "./components/UploadForm";
 function App() {
   const isAuthenticated = localStorage.getItem("adminToken"); // Authentication check
 
@@ -35,7 +35,7 @@ function App() {
         {/* User Pages */}
         <Route path="/user" element={<BuyMedicine />} />
         <Route path="/view-history" element={<ViewHistory />} />
-
+        <Route path="/skin_detection" element={<UploadForm />} />
         {/* Protected Routes */}
         <Route
           path="/*"
@@ -47,6 +47,7 @@ function App() {
                     <Sidebar />
                     <main className="flex-1 p-5 overflow-auto">
                       <Routes>
+                      <Route path="/skin_detection" element={<UploadForm />} />
                         <Route path="/dashboard" element={<Dashboard />} />
                         <Route path="/restock" element={<Restock />} />
                         <Route path="/add-medicine" element={<AddMedicine />} />
