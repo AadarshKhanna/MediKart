@@ -4,7 +4,7 @@ const path = require("path");
 
 // Multer setup for medicine image uploads
 const storage = multer.diskStorage({
-  destination: "./uploads/medicines/",
+  destination: "./routes/images/",
   filename: (req, file, cb) => {
     cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   },

@@ -9,7 +9,8 @@
     "quantity": 144,
     "restockThreshold": 10,
     "prescriptionRequired": false,
-    "expiryDate": "2026-12-31"
+    "expiryDate": "2026-12-31",
+    "imgage": "paracetamol.jpg"
   },
   {
     "id": "1744747097942",
@@ -22,19 +23,32 @@
     "restockThreshold": 20,
     "prescriptionRequired": false,
     "expiryDate": "2027-06-16",
-    "image": null
+    "image": "cetirizine.jpg"
   },
   {
-    "id": "1744750980095",
-    "name": "Cetaphil",
+    "id": "1744752140326",
+    "name": "Codeine",
     "company": "Apollo",
-    "description": "werty",
-    "category": "Hair",
-    "price": 50,
-    "quantity": 225,
-    "restockThreshold": 11,
-    "prescriptionRequired": false,
-    "expiryDate": "2026-10-16",
-    "image": null
+    "description": "qerty",
+    "category": "painkiller",
+    "price": 100,
+    "quantity": 200,
+    "restockThreshold": 17,
+    "prescriptionRequired": "false",
+    "expiryDate": "2029-02-16",
+    "image": "image-1744752140316.png"
+  },
+  {
+    "id": "1744753022905",
+    "name": "Cetaphil1",
+    "company": "21",
+    "description": "d2",
+    "category": "d2ed",
+    "price": 222,
+    "quantity": 121,
+    "restockThreshold": -3,
+    "prescriptionRequired": "true",
+    "expiryDate": "2025-05-02",
+    "image": "image-1744753022896.png"
   }
 ]

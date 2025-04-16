@@ -123,7 +123,7 @@ const addMedicine = (req, res) => {
       restockThreshold: parsedRestockThreshold,
       prescriptionRequired,
       expiryDate,
-      image: imageFile ? imageFile.filename : null, // Store the filename of the uploaded image
+      image: imageFile ? imageFile.filename : null, 
     };
 
     medicines.push(newMedicine);

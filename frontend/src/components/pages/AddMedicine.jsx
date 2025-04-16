@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { Plus, AlertCircle, CheckCircle2, Trash2 } from "lucide-react";
+import { Plus, AlertCircle, CheckCircle2, Trash2, Image as ImageIcon } from "lucide-react";
 
 function AddMedicine() {
   const [medicines, setMedicines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [newMedicine, setNewMedicine] = useState({
     name: "",
@@ -19,6 +20,7 @@ function AddMedicine() {
     restockThreshold: "",
     prescriptionRequired: false,
     expiryDate: "",
+    image: null,
   });
 
   useEffect(() => {
@@ -28,7 +30,12 @@ function AddMedicine() {
   const fetchMedicines = async () => {
     try {
       const response = await axios.get("http://localhost:5001/api/medicines");
-      setMedicines(response.data);
+      // Update image path to match backend storage location
+      const medicinesWithImages = response.data.map(medicine => ({
+        ...medicine,
+        image: medicine.image ? `http://localhost:5001/images/${medicine.image}` : null
+      }));
+      setMedicines(medicinesWithImages);
       setLoading(false);
     } catch (error) {
       setError("Failed to fetch medicines");
@@ -44,11 +51,65 @@ function AddMedicine() {
     });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        setError("Please select an image file");
+        return;
+      }
+      // Check file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        setError("Image size should be less than 5MB");
+        return;
+      }
+      setNewMedicine({
+        ...newMedicine,
+        image: file,
+      });
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5001/api/medicines", newMedicine);
-      setMedicines([...medicines, response.data.medicine]);
+      const formData = new FormData();
+      // Append all fields to formData
+      formData.append('name', newMedicine.name);
+      formData.append('company', newMedicine.company);
+      formData.append('description', newMedicine.description);
+      formData.append('category', newMedicine.category);
+      formData.append('price', newMedicine.price);
+      formData.append('quantity', newMedicine.quantity);
+      formData.append('restockThreshold', newMedicine.restockThreshold);
+      formData.append('prescriptionRequired', newMedicine.prescriptionRequired);
+      formData.append('expiryDate', newMedicine.expiryDate);
+      
+      // Append image file if exists
+      if (newMedicine.image) {
+        formData.append('image', newMedicine.image);
+      }
+
+      const response = await axios.post("http://localhost:5001/api/medicines", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      // Update image path for the new medicine
+      const newMedicineWithImage = {
+        ...response.data.medicine,
+        image: response.data.medicine.image ? `http://localhost:5001/images/${response.data.medicine.image}` : null
+      };
+
+      setMedicines([...medicines, newMedicineWithImage]);
       setSuccessMessage("Medicine added successfully!");
       setNewMedicine({
         name: "",
@@ -60,7 +121,9 @@ function AddMedicine() {
         restockThreshold: "",
         prescriptionRequired: false,
         expiryDate: "",
+        image: null,
       });
+      setImagePreview(null);
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch (error) {
       setError("Failed to add medicine");
@@ -122,8 +185,8 @@ function AddMedicine() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Add Medicine Form */}
-          <div className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <div className="lg:col-span-1 bg-white dark:bg-amber-800 rounded-xl shadow-lg p-6">
+            <h2 className="text-xl font-semibold text-blue-200 dark:text-white mb-6">
               Medicine Details
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -241,7 +304,7 @@ function AddMedicine() {
                 />
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
                 <input
                   type="checkbox"
                   name="prescriptionRequired"
@@ -252,6 +315,37 @@ function AddMedicine() {
                 <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Prescription Required
                 </label>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  Medicine Image
+                </label>
+                <div className="relative">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="hidden"
+                    id="image-upload"
+                  />
+                  <label
+                    htmlFor="image-upload"
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    <ImageIcon size={20} />
+                    <span>Choose Image</span>
+                  </label>
+                </div>
+                {imagePreview && (
+                  <div className="mt-2">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-full h-32 object-cover rounded-lg"
+                    />
+                  </div>
+                )}
               </div>
 
               <button
@@ -266,7 +360,7 @@ function AddMedicine() {
 
           {/* Medicines List */}
           <div className="lg:col-span-2">
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6">
+            <div className="bg-white dark:bg-amber-800 rounded-xl shadow-lg p-6">
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                 Current Inventory
               </h2>
@@ -297,6 +391,19 @@ function AddMedicine() {
                         </motion.button>
                       </div>
                     </div>
+                    {medicine.image && (
+                      <div className="mb-2">
+                        <img
+                          src={medicine.image}
+                          alt={medicine.name}
+                          className="w-full h-32 object-cover rounded-lg"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+                          }}
+                        />
+                      </div>
+                    )}
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
                       {medicine.company}
                     </p>

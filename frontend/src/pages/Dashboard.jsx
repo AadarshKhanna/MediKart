@@ -69,7 +69,7 @@ const Dashboard = () => {
     {
       key: "sales",
       title: "Total Sales",
-      value: "$250,000",
+      value: "₹250,000",
       icon: <FaMoneyBillWave size={30} />,
       color: "bg-green-500",
     },
