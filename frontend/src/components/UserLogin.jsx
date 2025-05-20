@@ -20,7 +20,7 @@ const UserLogin = () => {
         // Save the token to localStorage for user login
         localStorage.setItem("token", response.data.token);
         // Redirect to User Dashboard
-        navigate("/dashboard");
+        navigate("/userdashboard");
       }
     } catch (err) {
       setError("Invalid email or password");

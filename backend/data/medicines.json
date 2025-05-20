@@ -6,7 +6,7 @@
     "description": "Used to treat fever and mild to moderate pain.",
     "category": "Pain Reliever",
     "price": 50,
-    "quantity": 144,
+    "quantity": 145,
     "restockThreshold": 10,
     "prescriptionRequired": false,
     "expiryDate": "2026-12-31",
@@ -32,7 +32,7 @@
     "description": "qerty",
     "category": "painkiller",
     "price": 100,
-    "quantity": 200,
+    "quantity": 207,
     "restockThreshold": 17,
     "prescriptionRequired": "false",
     "expiryDate": "2029-02-16",
@@ -45,10 +45,23 @@
     "description": "d2",
     "category": "d2ed",
     "price": 222,
-    "quantity": 121,
-    "restockThreshold": -3,
+    "quantity": 205,
+    "restockThreshold": 10,
     "prescriptionRequired": "true",
     "expiryDate": "2025-05-02",
     "image": "image-1744753022896.png"
+  },
+  {
+    "id": "1747773152107",
+    "name": "Minoxidil",
+    "company": "Apollo",
+    "description": "Hair growth",
+    "category": "Hair",
+    "price": 245,
+    "quantity": 40,
+    "restockThreshold": 17,
+    "prescriptionRequired": "true",
+    "expiryDate": "2027-10-20",
+    "image": "image-1747773152103.png"
   }
 ]

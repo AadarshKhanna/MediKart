@@ -51,7 +51,7 @@ function DoctorProfileDashboard() {
   }
 
   return (
-    <div className="min-h-screen w-full p-8 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen w-full p-8 bg-gray-50 dark:bg-gray-300">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="flex items-center gap-4 mb-8">
@@ -132,8 +132,8 @@ function DoctorProfileDashboard() {
         {/* Tabs Section */}
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
           <div className="border-b border-gray-200 dark:border-gray-700">
-            <nav className="flex -mb-px">
-              {["overview", "prescriptions", "patients", "reports"].map((tab) => (
+            <nav className="p-4 flex -mb-px">
+              {["overview", "prescriptions", "patients", "reports"].map((tab, idx, arr) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -141,7 +141,7 @@ function DoctorProfileDashboard() {
                     activeTab === tab
                       ? "border-b-2 border-blue-500 text-blue-600 dark:text-blue-400"
                       : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
-                  }`}
+                  } ${idx !== arr.length - 1 ? "mr-6" : ""}`} 
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
@@ -176,52 +176,36 @@ function DoctorProfileDashboard() {
                 {[1, 2, 3].map((item) => (
                   <div key={item} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                     <div className="flex items-center gap-4">
-                      <div className={`p-2 rounded-full ${
-                        item % 2 === 0 ? 'bg-green-100 dark:bg-green-900/30' : 'bg-red-100 dark:bg-red-900/30'
-                      }`}>
-                        {item % 2 === 0 ? (
-                          <CheckCircle2 size={20} className="text-green-600 dark:text-green-400" />
-                        ) : (
-                          <XCircle size={20} className="text-red-600 dark:text-red-400" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-gray-900 dark:text-white">Prescription #{item}</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                          {item % 2 === 0 ? 'Approved' : 'Rejected'} - {item} hour ago
-                        </p>
-                      </div>
+                    <FileText size={20} className="text-blue-600 dark:text-blue-400" />
+                    <div>
+                    <p className="text-gray-900 dark:text-white">Prescription #{item}</p>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Issued on 2025-05-20</p>
                     </div>
-                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
-                      View Details
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {activeTab === "patients" && (
-              <div className="space-y-4">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
-                        <span className="text-blue-600 dark:text-blue-400 font-medium">P{item}</span>
-                      </div>
-                      <div>
-                        <p className="text-gray-900 dark:text-white">Patient {item}</p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Last prescription: 2 days ago</p>
-                      </div>
                     </div>
-                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
-                      View History
+                    <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    View
                     </button>
-                  </div>
-                ))}
+                    </div>
+                    ))}
+                    </div>
+                    )}
+        {activeTab === "patients" && (
+          <div className="space-y-4">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold">
+                  P{item}
+                </div>
+                <div>
+                  <p className="text-gray-900 dark:text-white">Patient Name {item}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Last visit: 2025-05-15</p>
+                </div>
               </div>
-            )}
+            ))}
+          </div>
+        )}
 
-            {activeTab === "reports" && (
+        {activeTab === "reports" && (
               <div className="space-y-4">
                 {[1, 2, 3].map((item) => (
                   <div key={item} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
@@ -232,18 +216,19 @@ function DoctorProfileDashboard() {
                         <p className="text-sm text-gray-500 dark:text-gray-400">Generated: 1 week ago</p>
                       </div>
                     </div>
-                    <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
+                    {/* <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg">
                       Download
-                    </button>
+                    </button> */}
                   </div>
                 ))}
               </div>
             )}
           </div>
-        </div>
       </div>
     </div>
-  );
+  </div>
+
+);
 }
 
 export default DoctorProfileDashboard;

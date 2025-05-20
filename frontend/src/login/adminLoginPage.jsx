@@ -11,7 +11,7 @@ const LoginPage = () => {
     // Dummy authentication (Replace with backend API call)
     if (password === "admin123") {
       localStorage.setItem("adminToken", "logged_in"); // Store login token
-      navigate("/dashboard"); 
+      navigate("/admindashboard"); 
     } else {
       alert("Invalid password. Try again!");
     }

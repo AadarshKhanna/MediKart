@@ -6,7 +6,7 @@ function Sidebar() {
   const navigate = useNavigate(); // Hook for navigation
 
   const menuItems = [
-    { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+    { name: "Dashboard", path: "/admindashboard", icon: <LayoutDashboard size={20} /> },
     { name: "Restock", path: "/restock", icon: <Package size={20} /> },
     { name: "Add Medicine", path: "/add-medicine", icon: <PlusCircle size={20} /> },
     { name: "Doctors Management", path: "/doctors", icon: <Stethoscope size={20} /> },
