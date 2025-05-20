@@ -27,38 +27,55 @@ const loadOrders = () => {
   return [];
 };
 
-// Save order details to JSON file
-const saveOrder = (order) => {
-  const orders = loadOrders();
-  orders.push(order);
+// Save all orders to file
+const saveOrders = (orders) => {
   fs.writeFileSync(ORDERS_FILE, JSON.stringify(orders, null, 2));
+};
+
+// Append and save new orders
+const appendOrders = (newOrders) => {
+  const orders = loadOrders();
+  orders.push(...newOrders);
+  saveOrders(orders);
 };
 
 // Handle order placement
 router.post("/", upload.single("prescription"), (req, res) => {
-  const { medicineId, medicineName, quantity, age, address, pincode } = req.body;
+  const { cart, age, address, pincode } = req.body;
   const prescriptionFile = req.file;
 
   if (!prescriptionFile) {
     return res.status(400).json({ message: "Prescription upload required" });
   }
 
-  const newOrder = {
-    medicineId,
-    medicineName,
-    quantity,
+  let parsedCart;
+  try {
+    parsedCart = JSON.parse(cart);
+    if (!Array.isArray(parsedCart)) {
+      throw new Error("Invalid cart format");
+    }
+  } catch (err) {
+    return res.status(400).json({ message: "Invalid cart data", error: err.message });
+  }
+
+  const timestamp = new Date().toISOString();
+
+  const ordersToSave = parsedCart.map((item) => ({
+    medicineId: item.id,
+    medicineName: item.name,
+    quantity: item.quantity,
     age,
     address,
     pincode,
     prescription: prescriptionFile.filename,
-    timestamp: new Date().toISOString(),
-  };
+    timestamp
+  }));
 
-  saveOrder(newOrder);
+  appendOrders(ordersToSave);
 
   res.json({
-    message: "Order received. Doctors will review your prescription.",
-    orderDetails: newOrder,
+    message: "Order(s) received. Doctors will review your prescription.",
+    orders: ordersToSave,
   });
 });
 

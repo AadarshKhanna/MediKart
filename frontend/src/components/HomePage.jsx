@@ -1,26 +1,37 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="home-container">
-      <h1 className="title">Welcome to HealthCare Portal</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center justify-center p-6">
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-12 text-center">
+        Welcome to <span className="text-blue-600">HealthCare Portal</span>
+      </h1>
 
-      <div className="section" onClick={() => navigate('/user')}>
-        <h2 className="section-title">Medicine</h2>
-        <p className="section-description">
-          Buy Medicine: Upload prescriptions and order medicines at your doorstep.
-        </p>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full max-w-5xl">
+        {/* Medicine Section */}
+        <div
+          onClick={() => navigate('/user')}
+          className="bg-white cursor-pointer rounded-2xl shadow-lg p-8 transition hover:shadow-2xl hover:scale-105 border border-gray-200"
+        >
+          <h2 className="text-2xl font-semibold text-blue-700 mb-4">Medicine</h2>
+          <p className="text-gray-600">
+            Upload prescriptions and order medicines at your doorstep with ease and safety.
+          </p>
+        </div>
 
-      <div className="section" onClick={() => navigate('skin_detection')}>
-        <h2 className="section-title">Skin Detection</h2>
-        <p className="section-description">
-          Upload a skin photo to detect diseases and get personalized suggestions.
-        </p>
+        {/* Skin Detection Section */}
+        <div
+          onClick={() => navigate('/skin_detection')}
+          className="bg-white cursor-pointer rounded-2xl shadow-lg p-8 transition hover:shadow-2xl hover:scale-105 border border-gray-200"
+        >
+          <h2 className="text-2xl font-semibold text-pink-700 mb-4">Skin Detection</h2>
+          <p className="text-gray-600">
+            Upload a photo of your skin to detect potential conditions and receive smart suggestions.
+          </p>
+        </div>
       </div>
     </div>
   );
