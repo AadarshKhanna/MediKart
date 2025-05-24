@@ -5,10 +5,18 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
 
 const predictRoute = require('./routes/predictRoute');
 // Load environment variables
 dotenv.config();
+
+const razorpay = new Razorpay({
+  key_id: 'rzp_test_NU6XBPuT004bec',
+  key_secret: 'osjIJe1StkvNYYWsoo7YV4RJ'
+});
+
 
 const adminRoutes = require("./routes/adminRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
@@ -87,6 +95,71 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
+// Razorpay Order Creation Endpoint
+app.post("/api/create-order", async (req, res) => {
+  try {
+    const { amount } = req.body;
+
+    if (!amount || amount <= 0) {
+      return res.status(400).json({ message: "Invalid amount" });
+    }
+
+    const options = {
+      amount: amount, // amount in paise
+      currency: "INR",
+      receipt: `receipt_${Date.now()}`,
+      payment_capture: 1
+    };
+
+    const order = await razorpay.orders.create(options);
+    res.json(order);
+  } catch (error) {
+    console.error("Error creating Razorpay order:", error);
+    res.status(500).json({ message: "Error creating order", error: error.message });
+  }
+});
+
+// Razorpay Payment Verification
+app.post("/api/verify-payment", async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature
+    } = req.body;
+
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSign = crypto
+      .createHmac("sha256", razorpay.key_secret)
+      .update(sign.toString())
+      .digest("hex");
+
+    const isAuthentic = expectedSign === razorpay_signature;
+
+    if (isAuthentic) {
+      res.json({
+        verified: true,
+        message: "Payment verified successfully",
+        orderId: razorpay_order_id,
+        paymentId: razorpay_payment_id
+      });
+    } else {
+      res.status(400).json({
+        verified: false,
+        message: "Payment verification failed"
+      });
+    }
+  } catch (error) {
+    console.error("Payment verification error:", error);
+    res.status(500).json({
+      verified: false,
+      message: "Error verifying payment",
+      error: error.message
+    });
+  }
+});
+
 
 // Root Route
 app.get("/", (req, res) => {

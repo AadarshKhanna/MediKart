@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../../login/Navbar";
 import { FaShoppingCart } from "react-icons/fa";
+import RazorpayPayment from '../RazorpayPayment'; // Adjust the path if needed
+import './BuyMedicine.css';
 
 const BuyMedicine = () => {
   const [medicines, setMedicines] = useState([]);
@@ -9,10 +11,17 @@ const BuyMedicine = () => {
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
 
+  const subtotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+const gstAmount = subtotal * 0.18;
+const totalAmount = subtotal + gstAmount;
+
   const [address, setAddress] = useState("");
   const [pincode, setPincode] = useState("");
   const [age, setAge] = useState("");
   const [prescription, setPrescription] = useState(null);
+  const getCartQuantity = () => {
+  return cart.reduce((total, item) => total + item.quantity, 0);
+};
 
   useEffect(() => {
     axios
@@ -70,6 +79,40 @@ const decreaseQuantity = (id) => {
   }
 };
 
+const calculateTotal = () => {
+  return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+};
+
+const handlePaymentSuccess = (response) => {
+  const formData = new FormData();
+  formData.append("cart", JSON.stringify(cart));
+  formData.append("age", age);
+  formData.append("address", address);
+  formData.append("pincode", pincode);
+  formData.append("prescription", prescription);
+
+  axios
+    .post("http://localhost:5001/api/orders", formData)
+    .then(() => {
+      alert("Order placed! Our doctors will review your prescription.");
+      setCart([]);
+      setAddress("");
+      setAge("");
+      setPincode("");
+      setPrescription(null);
+      setShowCheckout(false);
+      setShowCart(false);
+    })
+    .catch((error) => {
+      alert("Error placing order. Please try again.");
+      console.error("Order error:", error);
+    });
+};
+
+const handlePaymentFailure = (error) => {
+  console.error("Payment failed:", error);
+  alert("Payment failed: " + error.message);
+};
 
   const handleCheckout = () => {
     setShowCheckout(true);
@@ -119,22 +162,36 @@ const submitOrder = () => {
 
 
   return (
+    
     <div style={styles.container}>
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "10px" }}>
+    <Navbar/>
+      <div className="header-bar">
         {showCart ? (
-          <button onClick={() => setShowCart(false)} style={styles.backButton}>
+          <button onClick={() => setShowCart(false)} className="back-button">
             ⬅ Back
           </button>
         ) : (
           <div></div> // Keeps spacing consistent when cart is closed
         )}
-        <FaShoppingCart
-          size={30}
-          onClick={() => setShowCart(!showCart)}
-          style={{ cursor: "pointer", color: "#333" }}
-        />
+        <div style={{ position: "relative", cursor: "pointer" }} onClick={() => setShowCart(!showCart)}>
+          <FaShoppingCart size={30} className="cart-icon" />
+          {getCartQuantity() > 0 && (
+            <div style={{
+              position: "absolute",
+              top: -5,
+              right: -10,
+              backgroundColor: "red",
+              color: "white",
+              borderRadius: "50%",
+              padding: "2px 6px",
+              fontSize: "12px",
+            }}>
+              {getCartQuantity()}
+            </div>
+          )}
+        </div>
       </div>
+
       {showCart ? (
         <div>
           <h2 style={styles.heading}>Cart</h2>
@@ -161,7 +218,19 @@ const submitOrder = () => {
                   </div>
                   <div style={{ flex: 1, textAlign: "center" }}>₹{item.price * item.quantity}</div>
                   <div style={{ flex: 0.5, textAlign: "center" }}>
-                    <button onClick={() => removeFromCart(item.id)}>🗑️</button>
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      style={{
+                        backgroundColor: "red",
+                        color: "white",
+                        border: "none",
+                        padding: "6px 10px",
+                        borderRadius: "5px",
+                        cursor: "pointer"
+                      }}
+                    >
+                      🗑️
+                    </button>
                   </div>
                 </div>
               ))}
@@ -181,7 +250,7 @@ const submitOrder = () => {
           <h2 style={styles.heading}>Available Medicines</h2>
           <div style={styles.medicineList}>
             {medicines.map((medicine) => (
-              <div key={medicine.id} style={styles.card}>
+              <div key={medicine.id} className="card">
                 <img src={medicine.image} alt={medicine.name} style={styles.image} />
                 <h3>{medicine.name}</h3>
                 <p>{medicine.description}</p>
@@ -261,12 +330,62 @@ const submitOrder = () => {
               Note: Prescription will be verified. Invalid ones will be rejected.
             </p>
 
-            <div style={{ marginTop: 10 }}>
-              <button style={{ marginRight: 10 }} onClick={submitOrder}>
-                Submit
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              marginTop: '20px'
+            }}>
+              <div style={{
+                backgroundColor: '#f3f4f6',
+                padding: '12px',
+                borderRadius: '8px',
+                marginBottom: '15px',
+                fontSize: '15px',
+                lineHeight: '1.6',
+                border: '1px solid #d1d5db'
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>Subtotal</span>
+                  <span>₹{subtotal.toFixed(2)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>GST (18%)</span>
+                  <span>₹{gstAmount.toFixed(2)}</span>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontWeight: 'bold',
+                  marginTop: '10px'
+                }}>
+                  <span>Total</span>
+                  <span>₹{totalAmount.toFixed(2)}</span>
+                </div>
+              </div>
+              <RazorpayPayment
+                amount={(calculateTotal() * 1.18).toFixed(2)}
+                orderId={`ORD-${Date.now()}`}
+                onSuccess={handlePaymentSuccess}
+                onFailure={handlePaymentFailure}
+              />
+              <button
+                onClick={() => setShowCheckout(false)}
+                style={{
+                  padding: '12px 24px',
+                  backgroundColor: '#ef4444',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  borderRadius: '8px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '16px'
+                }}
+              >
+                Cancel
               </button>
-              <button onClick={() => setShowCheckout(false)}>Cancel</button>
-            </div>
+      </div>
+
           </div>
         </div>
       )}
@@ -276,27 +395,28 @@ const submitOrder = () => {
 
 const styles = {
   container: {
+    marginTop:"70px",
     padding: "20px",
     backgroundColor: "#e7e7ee",
     minHeight: "100vh",
   },
   heading: {
     textAlign: "center",
-    color: "#333",
+    marginBottom: "20px",
+    fontSize: "28px",
+    fontWeight: "bold",
+    color: "#2c3e50",
+    textTransform: "uppercase",
+    letterSpacing: "1px",
+    borderBottom: "3px solid #3498db",
+    display: "inline-block",
+    paddingBottom: "5px",
   },
   medicineList: {
     display: "flex",
     flexWrap: "wrap",
     gap: "20px",
     justifyContent: "center",
-  },
-  card: {
-    backgroundColor: "white",
-    padding: "15px",
-    borderRadius: "10px",
-    width: "200px",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-    textAlign: "center",
   },
   image: {
     width: "100%",
@@ -307,7 +427,7 @@ const styles = {
   button: {
     marginTop: "10px",
     padding: "8px 12px",
-    backgroundColor: "#007bff",
+    backgroundColor: "green",
     color: "white",
     border: "none",
     borderRadius: "4px",
@@ -329,18 +449,7 @@ const styles = {
     marginBottom: "10px",
     borderRadius: "4px",
     border: "1px solid #ccc",
-  },
-backButton: {
-  marginBottom: "10px",
-  padding: "8px 12px",
-  backgroundColor: "#343a40", // dark grey
-  color: "white",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-  fontWeight: "bold"
-}
-
+  }
 };
 
 export default BuyMedicine;
