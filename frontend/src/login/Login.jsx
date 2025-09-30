@@ -23,7 +23,7 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("adminToken", "logged_in");
         alert("Login successful!");
-        navigate("/user");
+        navigate("/home");
       } else {
         setError(data.message || "Login failed");
       }

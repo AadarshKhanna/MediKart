@@ -24,7 +24,7 @@ function App() {
     <Router>
       <Routes>
         {/* Redirect to landing page after login */}
-        <Route path="/" element={isAuthenticated ? <Navigate to="/landing" /> : <Navigate to="/login" />} />
+        <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <Navigate to="/landing" />} />
 
         {/* Login & Signup Pages */}
         <Route path="/signup" element={<Signup />} />
@@ -34,9 +34,7 @@ function App() {
 
         {/* Landing Page (after login) */}
         <Route path="/landing" element={<LandingPage />} />
-
         <Route path="/home" element={<HomePage />} />
-
         {/* User Pages */}
         <Route path="/user" element={<BuyMedicine />} />
         <Route path="/view-history" element={<ViewHistory />} />
