@@ -4,6 +4,7 @@ import Navbar from "../../login/Navbar";
 import { FaShoppingCart } from "react-icons/fa";
 import RazorpayPayment from '../RazorpayPayment'; // Adjust the path if needed
 import './BuyMedicine.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const BuyMedicine = () => {
   const [medicines, setMedicines] = useState([]);
@@ -25,12 +26,12 @@ const totalAmount = subtotal + gstAmount;
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/medicines")
+      .get(`${API_URL}/api/medicines`)
       .then((response) => {
         const medicinesWithImages = response.data.map((medicine) => ({
           ...medicine,
           image: medicine.image
-            ? `http://localhost:5001/images/${medicine.image}`
+            ? `${API_URL}/images/${medicine.image}`
             : null,
         }));
         setMedicines(medicinesWithImages);
@@ -92,7 +93,7 @@ const handlePaymentSuccess = (response) => {
   formData.append("prescription", prescription);
 
   axios
-    .post("http://localhost:5001/api/orders", formData)
+    .post(`${API_URL}/api/orders`, formData)
     .then(() => {
       alert("Order placed! Our doctors will review your prescription.");
       setCart([]);
@@ -143,7 +144,7 @@ const submitOrder = () => {
   formData.append("prescription", prescription);
 
   axios
-    .post("http://localhost:5001/api/orders", formData)
+    .post(`${API_URL}/api/orders`, formData)
     .then(() => {
       alert("Order placed! Our doctors will review your prescription.");
       setCart([]);

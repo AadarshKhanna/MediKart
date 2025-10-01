@@ -3,6 +3,7 @@ import axios from 'axios';
 import medicineMapping from '../data/medicineData';
 import { FaShoppingCart } from 'react-icons/fa';
 import './UploadForm.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const UploadForm = () => {
   const [file, setFile] = useState(null);
@@ -29,7 +30,7 @@ const UploadForm = () => {
     formData.append('image', file);
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5001/api/predict', formData);
+      const response = await axios.post(`${API_URL}/api/predict`, formData);
       setResult(response.data);
     } catch (error) {
       console.error('Prediction failed', error);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Plus, AlertCircle, CheckCircle2, Trash2, Image as ImageIcon } from "lucide-react";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function AddMedicine() {
   const [medicines, setMedicines] = useState([]);
@@ -29,11 +30,11 @@ function AddMedicine() {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/medicines");
+      const response = await axios.get(`${API_URL}/api/medicines`);
       // Update image path to match backend storage location
       const medicinesWithImages = response.data.map(medicine => ({
         ...medicine,
-        image: medicine.image ? `http://localhost:5001/images/${medicine.image}` : null
+        image: medicine.image ? `${API_URL}/images/${medicine.image}` : null
       }));
       setMedicines(medicinesWithImages);
       setLoading(false);
@@ -97,7 +98,7 @@ function AddMedicine() {
         formData.append('image', newMedicine.image);
       }
 
-      const response = await axios.post("http://localhost:5001/api/medicines", formData, {
+      const response = await axios.post(`${API_URL}/api/medicines`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -106,7 +107,7 @@ function AddMedicine() {
       // Update image path for the new medicine
       const newMedicineWithImage = {
         ...response.data.medicine,
-        image: response.data.medicine.image ? `http://localhost:5001/images/${response.data.medicine.image}` : null
+        image: response.data.medicine.image ? `${API_URL}/images/${response.data.medicine.image}` : null
       };
 
       setMedicines([...medicines, newMedicineWithImage]);
@@ -136,7 +137,7 @@ function AddMedicine() {
     }
 
     try {
-      await axios.delete(`http://localhost:5001/api/medicines/${medicineId}`);
+      await axios.delete(`${API_URL}/api/medicines/${medicineId}`);
       setMedicines(medicines.filter(medicine => medicine.id !== medicineId));
       setSuccessMessage("Medicine deleted successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);

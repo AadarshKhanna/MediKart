@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const RazorpayPayment = ({ amount, orderId, onSuccess, onFailure }) => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const RazorpayPayment = ({ amount, orderId, onSuccess, onFailure }) => {
   };
 
   const createOrder = async () => {
-    const response = await axios.post('http://localhost:5001/api/create-order', {
+    const response = await axios.post(`${API_URL}/api/create-order`, {
       amount: Math.round(amount * 100), // Convert to paise
     });
     return response.data;
@@ -48,7 +49,7 @@ const RazorpayPayment = ({ amount, orderId, onSuccess, onFailure }) => {
         order_id: order.id,
         handler: async function (response) {
           try {
-            const verificationResponse = await axios.post('http://localhost:5001/api/verify-payment', {
+            const verificationResponse = await axios.post(`${API_URL}/api/verify-payment`, {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature

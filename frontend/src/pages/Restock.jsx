@@ -9,6 +9,7 @@ import {
   ArrowUpDown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";  // <-- import useNavigate
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Restock() {
   const [medicines, setMedicines] = useState([]);
@@ -29,7 +30,7 @@ function Restock() {
 
   const fetchMedicines = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/medicines");
+      const response = await axios.get(`${API_URL}/api/medicines`);
       setMedicines(response.data);
       setLoading(false);
     } catch (error) {
@@ -47,7 +48,7 @@ function Restock() {
 
     try {
       await axios.patch(
-        `http://localhost:5001/api/medicines/restock/${medicineId}`,
+        `${API_URL}/api/medicines/restock/${medicineId}`,
         { quantity: parseInt(quantity) }
       );
 

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Calendar, Clock, Star, MessageSquare, FileText, Activity, CheckCircle2, XCircle } from "lucide-react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function DoctorProfileDashboard() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ function DoctorProfileDashboard() {
 
   const fetchDoctorDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5001/api/doctors/doctorprofile/${id}`);
+      const response = await axios.get(`${API_URL}/api/doctors/doctorprofile/${id}`);
       setDoctor(response.data);
       setLoading(false);
     } catch (error) {

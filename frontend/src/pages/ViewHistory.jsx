@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../login/Navbar";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ViewHistory = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:5001/api/order-history")
+      .get(`${API_URL}/api/order-history`)
       .then((response) => setOrders(response.data))
       .catch((error) => console.error("Error fetching order history:", error));
   }, []);

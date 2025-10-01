@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search, CheckCircle, XCircle, Plus, User, Mail, Phone, Briefcase, Calendar } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function DoctorsSection() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function DoctorsSection() {
 
   const fetchDoctors = async () => {
     try {
-      const response = await axios.get("http://localhost:5001/api/doctors");
+      const response = await axios.get(`${API_URL}/api/doctors`);
       setDoctors(response.data);
     } catch (error) {
       console.error("Error fetching doctors:", error);
@@ -44,7 +45,7 @@ function DoctorsSection() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5001/api/doctors/add-doctor", formData);
+      await axios.post(`${API_URL}/api/doctors/add-doctor`, formData);
       setFormData({
         name: "",
         specialization: "",
@@ -65,7 +66,7 @@ function DoctorsSection() {
     try {
       const doctor = doctors.find(doc => doc.id === id);
       const newStatus = doctor.status === "Active" ? "Inactive" : "Active";
-      await axios.put(`http://localhost:5001/api/doctors/${id}`, { status: newStatus });
+      await axios.put(`${API_URL}/api/doctors/${id}`, { status: newStatus });
       fetchDoctors();
     } catch (error) {
       console.error("Error updating doctor status:", error);
